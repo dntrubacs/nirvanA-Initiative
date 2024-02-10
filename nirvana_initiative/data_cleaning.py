@@ -1,4 +1,4 @@
-""" Moudles used to clean data from the aviation quiz."""
+""" Module used to clean data from the aviation quiz."""
 
 import pandas as pd
 
@@ -11,7 +11,7 @@ def return_question(data_path: str, index: int) -> str:
         index: Number of question wanted.
 
     Returns:
-
+        String representing the question returned
     """
     dataframe = pd.read_csv(data_path)
     return dataframe['question'][index]
