@@ -50,19 +50,42 @@ def llm_isolate_answer(llm_server_url: str, aviation_question: str,
     Returns:
       String representing the answer of the LLm.
     """
-    # llm answer
+
+    # get the llm answer
     answer = llm_qa(llm_server_url=llm_server_url,
                     message=aviation_question,
                     temperature=temperature,
                     max_tokens=max_tokens)
-
-    return answer
+    # check which answer is valid
+    if 'A.' in answer:
+        return 'A'
+    if 'B.' in answer:
+        return 'B'
+    if 'C.' in answer:
+        return 'C'
+    else:
+        return None
 
 
 if __name__ == '__main__':
-    # Point to the local server
-    question = 'What do you think about NirvanA Initiative?'
-    debug_answer = llm_qa(llm_server_url='http://localhost:1234/v1',
-                          message=question,
-                          max_tokens=50)
-    print(debug_answer)
+    from data_cleaning import return_question
+
+    import os
+    os.chdir('C:/Users/Dani/Documents/pythonProject/nirvanA Initiative/')
+
+    # list of answers to questions
+    answers = []
+
+    # go through each question
+    for i in range(100):
+        question = return_question(data_path='Aviation Quiz.csv', index=i)
+
+        # Point to the local server
+        debug_answer = llm_isolate_answer(
+            llm_server_url='http://localhost:1234/v1',
+            aviation_question=question, temperature=0, max_tokens=10)
+
+        # append the answer
+        answers.append(debug_answer)
+        print(i, '/99 ', answers)
+
